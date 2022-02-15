@@ -4,10 +4,11 @@ let roundCards = [];
 
 // Create a template for card objects
 class card {
-    constructor(value, name, suit) {
+    constructor(value, name, suit, color) {
         this.value = value;
         this.name = name;
         this.suit = suit;
+        this.color = color;
     }
 }
 
@@ -16,15 +17,18 @@ const createDeck = () => {
     let deck = [];   // Initialize an array to store the created objects
     this.names = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
     this.suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'];
+    this.color = ['black', 'red'];
 
     // Creates a card of every name in each suit
     // I used j+2 as the value, so numerical cards have the same value as the number they show
+    //
     // For some games, the Ace might need to be altered to be valued as a 1
     // This could be easily achieved by placing the Ace at the beginning of the names array
     // and using j+1 as the card values in the loop below
+    //
     for (let i = 0; i < this.suits.length; i++) {
         for (let j = 0; j < this.names.length; j++) {
-            deck.push(new card(j+2, this.names[j], this.suits[i]));
+            deck.push(new card(j+2, this.names[j], this.suits[i], this.color[i % 2]));
         }
     }
     return deck;
@@ -58,7 +62,40 @@ const dealCards = (deck) => {
 }
 
 let gameDeck = createDeck();                                // Creates a new deck of standard cards
+console.log(gameDeck);
 gameDeck = shuffle(gameDeck);                               // Shuffles the deck -- Could shuffle any array
+
+
+// ------------------------ TEST CODE START ------------------------
+window.onload = function() {
+
+	for(var i=0; i < gameDeck.length; i++){
+		div = document.createElement('div');
+		div.className = 'card';
+
+		if(gameDeck[i].suit == 'Diamonds'){
+			var ascii_char = '♦';
+		} else {
+			var ascii_char = '&' + gameDeck[i].suit.toLowerCase() + ';';
+		}
+
+		div.innerHTML = '' + gameDeck[i].name + '' + ascii_char + '';
+		document.body.appendChild(div);
+	}
+}
+// // ************************************************
+//     const deckDisplay = div({ class: 'deck' });
+    
+//     cardsData.forEach((i) => {
+//         const card = createCard(i);
+        
+//         deckDisplay.appendChild(card);
+//       });
+      
+//       document.body.appendChild(deckDisplay);
+
+// }
+// ------------------------ TEST CODE END ------------------------
 dealCards(gameDeck);                                        // Splits deck into 2 arrays (1 for each player)
 
 

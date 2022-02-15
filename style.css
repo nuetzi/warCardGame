@@ -1,2 +1,23 @@
 *{
 }
+
+.card{
+    width: 5em;
+    height: 7em;
+    border:1px solid #151718;
+    background-color: #fffff8;
+    float:left;
+    margin-right:5px;
+    margin-bottom:5px;
+    border-radius: 0.25em;
+    font-family:courier;
+    box-shadow: 0 0.0625em 0.125em #242424;
+    cursor:pointer;
+  }
+  
+  span.name, span.suit{
+    width:100%;
+    display:block;
+    text-align:center;
+    padding-top:8px;
+  }
