@@ -1,5 +1,6 @@
 let playerDeck = [];
 let opponentDeck = [];
+let roundCards = [];
 
 // Create a template for card objects
 class card {
@@ -19,6 +20,8 @@ const createDeck = () => {
     // Creates a card of every name in each suit
     // I used j+2 as the value, so numerical cards have the same value as the number they show
     // For some games, the Ace might need to be altered to be valued as a 1
+    // This could be easily achieved by placing the Ace at the beginning of the names array
+    // and using j+1 as the card values in the loop below
     for (let i = 0; i < this.suits.length; i++) {
         for (let j = 0; j < this.names.length; j++) {
             deck.push(new card(j+2, this.names[j], this.suits[i]));
@@ -29,7 +32,7 @@ const createDeck = () => {
 
 
 // Function for shuffling (randomizing) the array of cards
-// Using Fisher-Yates Shuffle for optimal randomization of shuffle
+// Using the Fisher-Yates Shuffle algorithm for optimal randomization of shuffle
 const shuffle = (deck) => {
     let temp;                                               // Using 'temp' to allow swapping of cards without splicing
     for (let i = deck.length - 1; i > 0; i--) {             // While there remain elements to shuffle…
@@ -41,8 +44,7 @@ const shuffle = (deck) => {
     return deck;
 }
 
-let gameDeck = createDeck();                                // Creates a new deck
-gameDeck = shuffle(gameDeck);                               // Shuffles the deck
+                              
 
 
 // Evenly distribute the cards between 2 arrays
@@ -55,10 +57,47 @@ const dealCards = (deck) => {
     }
 }
 
+let gameDeck = createDeck();                                // Creates a new deck of standard cards
+gameDeck = shuffle(gameDeck);                               // Shuffles the deck -- Could shuffle any array
+dealCards(gameDeck);                                        // Splits deck into 2 arrays (1 for each player)
 
-dealCards(gameDeck);
+
+const playRound = (playerDeck, opponentDeck) => {
+    roundCards.push(playerDeck.shift());
+    roundCards.push(opponentDeck.shift());
+
+    // Test for a draw in the cards played and deal out cards in a "war" scenario
+    // The do-while loop will repeat until there is not a draw between the last played card by each side
+    do {
+        if (roundCards[roundCards.length-2].value === roundCards[roundCards.length-1].value) {
+            for (let i = 0; i < 4; i++) {
+                roundCards.push(playerDeck.shift());
+                roundCards.push(opponentDeck.shift());
+            }
+        }
+    }
+    while (roundCards[roundCards.length-2].value === roundCards[roundCards.length-1].value)
+
+    // If the player's last played card is greater, all cards in the round go to the bottom of the player's deck
+    if (roundCards[roundCards.length-2].value > roundCards[roundCards.length-1].value) {
+        for (let j = roundCards.length; j > 0; j--) {
+            playerDeck.push(roundCards.shift());
+        }
+    }
+
+    // If the opponent's last played card is greater, all cards in the round go to the bottom of the opponent's deck
+    else {
+        for (let j = roundCards.length; j > 0; j--) {
+            opponentDeck.push(roundCards.shift());
+        }
+    }
+
+}
 
 
-// FOR TESTING
-console.log(playerDeck);
-console.log(opponentDeck);
+// STILL TO DO:
+//
+//DOM elements to create visuals and HTML interface
+//Need to code for "war" scenario when a deck has <4 cards
+//Need to code win/lose conditions
+//Play test for unexpected errors
