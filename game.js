@@ -2,7 +2,8 @@ let playerDeck = [];
 let opponentDeck = [];
 let roundCards = [];
 
-// Create a template for card objects
+
+
 class card {
     constructor(value, name, suit, color) {
         this.value = value;
@@ -12,98 +13,79 @@ class card {
     }
 }
 
-// Creates an array of objects representing the standard deck of playing cards
-const createDeck = () => {
-    let deck = [];   // Initialize an array to store the created objects
-    this.names = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-    this.suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'];
-    this.color = ['black', 'red'];
+// Since I had a number of functions using the deck as an argument, I just made them methods of a fullDeck object
+class fullDeck {
+    constructor() {
+        this.deck = [];         
+        this.sort();            // Calling this actually creates the deck
+        this.shuffle();         // Since we need a shuffled deck anyway, this saves using the method later
+    }
 
-    // Creates a card of every name in each suit
-    // I used j+2 as the value, so numerical cards have the same value as the number they show
-    //
-    // For some games, the Ace might need to be altered to be valued as a 1
-    // This could be easily achieved by placing the Ace at the beginning of the names array
-    // and using j+1 as the card values in the loop below
-    //
-    for (let i = 0; i < this.suits.length; i++) {
-        for (let j = 0; j < this.names.length; j++) {
-            deck.push(new card(j+2, this.names[j], this.suits[i], this.color[i % 2]));
+    // Method that produces a full deck in order, as you might see in a brand new pack
+    // It could be useful to 'reset' the deck at some point, so I made it a method also
+    sort() {
+        this.deck = [];
+        this.names = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K',];
+        this.suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'];
+        this.colors = ['black', 'red'];              // I think this key will help me when I create visuals
+
+        // Creates a card of every name in each suit
+        for (let i = 0; i < this.suits.length; i++) {
+            for (let j = 0; j < this.names.length; j++) {
+                this.deck.push(new card(j+1, this.names[j], this.suits[i], this.colors[i % 2]));
+            }
+        }
+
+        // In this game, I want Aces to be the highest value card
+        // This bit of code can be commented out if a game requires Aces to count as 1
+        this.deck.forEach((card) => {
+            if (card.value == 1) {
+            card.value = 14
+            }
+        });
+    }
+
+    // Method for shuffling (randomizing) the array of cards
+    // I'm using the Fisher-Yates Shuffle algorithm for optimal randomization
+    shuffle() {
+        const deck = this.deck;
+        let temp;                                                 // Using 'temp' to allow swapping of cards without array splicing
+        for (let i = deck.length - 1; i > 0; i--) {               // While there remain elements to shuffle…
+            let rand = Math.floor(Math.random() * (i + 1));       // Pick a remaining element…
+            temp = deck[i];                                       //
+            deck[i] = deck[rand];                                 // And swap it with the current element.
+            deck[rand] = temp;                                    //
+        }
+        return deck;
+    }
+
+    // Simple method for dealing the first card and removing it from the deck
+    dealOne() {
+        return this.deck.shift();
+    }
+
+    // Evenly distributes the cards between 2 arrays, which we will need in this game
+    dealHalf() {
+        for (let i = 0; i < this.deck.length; i++) {
+            if (i % 2 == 0) {
+                playerDeck.push(this.deck[i]);
+            }
+            else opponentDeck.push(this.deck[i]);
         }
     }
-    return deck;
+
 }
 
+gameDeck = new fullDeck;
+gameDeck.dealHalf();
 
-// Function for shuffling (randomizing) the array of cards
-// Using the Fisher-Yates Shuffle algorithm for optimal randomization of shuffle
-const shuffle = (deck) => {
-    let temp;                                               // Using 'temp' to allow swapping of cards without splicing
-    for (let i = deck.length - 1; i > 0; i--) {             // While there remain elements to shuffle…
-      let rand = Math.floor(Math.random() * (i + 1));       // Pick a remaining element…
-      temp = deck[i];                                       //
-      deck[i] = deck[rand];                                 // And swap it with the current element.
-      deck[rand] = temp;                                    //
-    }
-    return deck;
-}
-
-                              
-
-
-// Evenly distribute the cards between 2 arrays
-const dealCards = (deck) => {
-    for (let i = 0; i < deck.length; i++) {
-        if (i % 2 == 0) {
-            playerDeck.push(deck[i]);
-        }
-        else opponentDeck.push(deck[i]);
-    }
-}
-
-let gameDeck = createDeck();                                // Creates a new deck of standard cards
-console.log(gameDeck);
-gameDeck = shuffle(gameDeck);                               // Shuffles the deck -- Could shuffle any array
-
-
-// ------------------------ TEST CODE START ------------------------
-window.onload = function() {
-
-	for(var i=0; i < gameDeck.length; i++){
-		div = document.createElement('div');
-		div.className = 'card';
-
-		if(gameDeck[i].suit == 'Diamonds'){
-			var ascii_char = '♦';
-		} else {
-			var ascii_char = '&' + gameDeck[i].suit.toLowerCase() + ';';
-		}
-
-		div.innerHTML = '' + gameDeck[i].name + '' + ascii_char + '';
-		document.body.appendChild(div);
-	}
-}
-// // ************************************************
-//     const deckDisplay = div({ class: 'deck' });
-    
-//     cardsData.forEach((i) => {
-//         const card = createCard(i);
-        
-//         deckDisplay.appendChild(card);
-//       });
-      
-//       document.body.appendChild(deckDisplay);
-
-// }
-// ------------------------ TEST CODE END ------------------------
-dealCards(gameDeck);                                        // Splits deck into 2 arrays (1 for each player)
 
 
 const playRound = (playerDeck, opponentDeck) => {
-    roundCards.push(playerDeck.shift());
+    roundCards.push(playerDeck.shift());                    // NOTE: Player's card will have even index in roundCards array
     roundCards.push(opponentDeck.shift());
 
-    // Test for a draw in the cards played and deal out cards in a "war" scenario
+    // Test for a draw in the cards played and if so, deal out cards in a "war" scenario
     // The do-while loop will repeat until there is not a draw between the last played card by each side
     do {
         if (roundCards[roundCards.length-2].value === roundCards[roundCards.length-1].value) {
@@ -132,9 +114,11 @@ const playRound = (playerDeck, opponentDeck) => {
 }
 
 
+
+
 // STILL TO DO:
 //
 //DOM elements to create visuals and HTML interface
-//Need to code for "war" scenario when a deck has <4 cards
+//Need to code logic for "war" scenario when a deck has <4 cards
 //Need to code win/lose conditions
-//Play test for unexpected errors
+//Play-test for unexpected errors

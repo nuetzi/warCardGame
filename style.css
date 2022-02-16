@@ -4,14 +4,14 @@
 .card{
     width: 5em;
     height: 7em;
-    border:1px solid #151718;
+    border:1px solid #181815;
     background-color: #fffff8;
     float:left;
     margin-right:5px;
     margin-bottom:5px;
     border-radius: 0.25em;
-    font-family:courier;
-    box-shadow: 0 0.0625em 0.125em #242424;
+    font-family: 'Cardo', serif;
+    box-shadow: 0 0.0625em 0.125em #282828;
     cursor:pointer;
   }
   
@@ -21,3 +21,11 @@
     text-align:center;
     padding-top:8px;
   }
+
+.card.red {
+    color: #f01411;
+}
+
+.card.black {
+    color: #181815;
+}
