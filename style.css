@@ -1,10 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.mainBody {
+    background-size: 100%;
+    background-color: #181815;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template: 20% 60% 20% / 20% 60% 20%;
+    align-items: center;
+    justify-items: center;
+}
+
+.gameArea {
+    grid-area: 2 / 2;
+    width: 650px;
+    height: 650px;
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: green;
+    display: grid;
+    grid-template: repeat(4, auto) / repeat(6, auto);
+    justify-items: center;
+    align-items: center;
+}
+
 .card {
     display: inline-block;
     position: relative;
-    margin-right:5px;
-    margin-bottom:5px;
-    width: 7em;
-    height: 10em;
+    margin:5px;
+    width: 105px;
+    height: 150px;
     font-family: 'Cardo', serif;
     border: 1px solid #151718;
     background-color: #faf9f5;
@@ -13,20 +41,31 @@
     cursor:pointer;
 }
   
-.card.red {
+.red {
     color: #da1711;
 }
 
-.card.black {
+.black {
     color: #181815;
 }
 
+.obverse{
+
+}
 
 .reverse{
     background-image: url("./cardBack.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.player {
+    grid-column: 1 span 2;
+}
+
+.opponent {
+    grid-column: 3 span 2;
 }
 
 .cardTopLeft {
