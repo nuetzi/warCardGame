@@ -19,6 +19,7 @@ class fullDeck {
         this.deck = [];         
         this.sort();            // Calling this actually creates the deck
         this.shuffle();         // Since we need a shuffled deck anyway, this saves using the method later
+        this.createVisuals();
     }
 
     // Method that produces a full deck in order, as you might see in a brand new pack
@@ -40,10 +41,184 @@ class fullDeck {
         // This bit of code can be commented out if a game requires Aces to count as 1
         this.deck.forEach((card) => {
             if (card.value == 1) {
-            card.value = 14
+                card.value += 13
             }
         });
     }
+
+    createVisuals() {
+        
+        const elementCreator = (tagName, attributes, children) => {
+            const element = document.createElement(tagName);
+            
+            if (attributes) {
+              for (const attrName in attributes) {
+                element.setAttribute(attrName, attributes[attrName]);
+              }
+            }
+            
+            if (children) {
+              for (let i = 0; i < children.length; i++) {
+                const child = children[i];
+                
+                if (typeof child === 'string') {
+                  element.appendChild(document.createTextNode(child));
+                } else {
+                  element.appendChild(child);
+                }
+              }
+            }
+            
+            return element;
+        };
+          
+        const div = (attributes, children) => elementCreator('div', attributes, children);
+        
+
+
+
+            const deck = this.deck;
+            // const div = document.createElement('div');
+            for (let i = 0; i < deck.length; i++) {                                  // Create a div for each card
+                let suitSymbol;
+                div.className = 'card';
+        
+                if (this.deck[i].suit == 'Diamonds') {                               // Generates the viewable symbols for each suit
+                    suitSymbol = '&diams;';
+                } else {
+                    suitSymbol = '&' + deck[i].suit.toLowerCase() + ';';
+                }
+        
+                div.innerHTML = '' + deck[i].name + '' + suitSymbol + '';           // Displays card name and suit
+                document.body.appendChild(document.createElement('div'));           // Make the div a child element of the body
+            }
+        
+            
+            const createSuit = (suit) => (position) => {
+                const [x, y, mirrored] = position;
+                let mirrorClass;
+                if (mirrored) {
+                    mirrorClass = " mirrored";
+                } else { mirrorClass = ""}
+            
+                return div({
+                    class: 'cardSuitSymbol' + mirrorClass,
+                    style: `left: ${x * 100}%; top: ${y * 100}%;`
+                }, [suit]);
+            };
+            
+
+            // This bit of code is the best way I found to show the suits on the card faces
+            // I didn't want to use an image for each card
+            // Format is shown in rows, with each array in the format:
+            // [x-position, y-position, upside-down]
+            const suitPositions = [
+                [
+                [0, 0]                                    // A
+                ],
+
+                [
+                [0, -1],
+                [0, 1, true]                              // 2
+                ],
+
+                [
+                [0, -1],
+                [0, 0],                                   // 3
+                [0, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [-1, 1, true], [1, 1, true]               // 4
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [0, 0],                                   // 5
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [-1, 0], [1, 0],                          // 6
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [0, -0.5],                                // 7
+                [-1, 0], [1, 0],
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [0, -0.5],
+                [-1, 0], [1, 0],                          // 8
+                [0, 0.5, true],
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [-1, -1 / 3], [1, -1 / 3],
+                [0, 0],                                   // 9
+                [-1, 1 / 3, true], [1, 1 / 3, true],
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [-1, -1], [1, -1],
+                [0, -2 / 3],
+                [-1, -1 / 3], [1, -1 / 3],
+                [-1, 1 / 3, true], [1, 1 / 3, true],      // 10
+                [0, 2 / 3, true],
+                [-1, 1, true], [1, 1, true]
+                ],
+
+                [
+                [0, 0]                                    // J
+                ],
+
+                [
+                [0, 0]                                    // Q
+                ],
+
+                [
+                [0, 0]                                    // K
+                ]
+            ];
+
+
+
+
+            deck.forEach((card) => {
+                const colorClass = 'card ' + card.color;
+        
+                return div({class: colorClass}, [
+                  div({ class: 'cardFaceSuits'},
+                    suitPositions[card.value % 13].map(createSuit(card.suit))        // ************NEED TO FIX********************
+                  ),
+                  div({ class: 'cardTopLeft'}, [
+                    div({ class: 'cardCornerName'}, [
+                     card.name
+                    ]),
+                    div({ class: 'cardCornerSuit' }, [
+                     card.suit
+                    ])
+                  ]),
+                  div({ class: 'cardBottomRight' }, [
+                    div({ class: 'cardCornerName' }, [
+                      card.name
+                    ]),
+                    div({ class: 'cardCornerSuit' }, [
+                      card.suit
+                    ])
+                  ])
+                ]);
+            })
+        };
 
     // Method for shuffling (randomizing) the array of cards
     // I'm using the Fisher-Yates Shuffle algorithm for optimal randomization
@@ -76,14 +251,26 @@ class fullDeck {
 
 }
 
+
+
 gameDeck = new fullDeck;
+console.log(gameDeck.deck[0]);
 gameDeck.dealHalf();
 
 
 
+
+
+//
+//------------------- GAMEPLAY ------------------------
+//
+
 const playRound = (playerDeck, opponentDeck) => {
-    roundCards.push(playerDeck.shift());                    // NOTE: Player's card will have even index in roundCards array
+    roundCards.push(playerDeck.shift());                    // NOTE: Player's card will always have an even index# in roundCards array
+    document.querySelector(".playerHand").innerHTML = roundCards[0]
+
     roundCards.push(opponentDeck.shift());
+
 
     // Test for a draw in the cards played and if so, deal out cards in a "war" scenario
     // The do-while loop will repeat until there is not a draw between the last played card by each side
@@ -112,6 +299,42 @@ const playRound = (playerDeck, opponentDeck) => {
     }
 
 }
+
+
+
+
+
+
+
+
+
+// ********************* Working with DOM
+// const el = (tagName, attributes, children) => {
+    
+    
+//     const element = document.createElement('div');
+    
+//     if (attributes) {
+//       for (const attrName in attributes) {
+//         element.setAttribute(attrName, attributes[attrName]);
+//       }
+//     }
+    
+//     if (children) {
+//       for (let i = 0; i < children.length; i++) {
+//         const child = children[i];
+//         if (typeof child === 'string') {
+//           element.appendChild(document.createTextNode(child));
+//         }
+//         else {
+//           element.appendChild(child);
+//         }
+//       }
+//     }  return element;
+//   };
+//   const div = (a, c) => el('div', a, c);
+
+
 
 
 

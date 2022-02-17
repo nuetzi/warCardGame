@@ -1,31 +1,75 @@
-*{
-}
-
-.card{
-    width: 5em;
-    height: 7em;
-    border:1px solid #181815;
-    background-color: #fffff8;
-    float:left;
+.card {
+    display: inline-block;
+    position: relative;
     margin-right:5px;
     margin-bottom:5px;
-    border-radius: 0.25em;
+    width: 7em;
+    height: 10em;
     font-family: 'Cardo', serif;
+    border: 1px solid #151718;
+    background-color: #faf9f5;
+    border-radius: 0.25em;
     box-shadow: 0 0.0625em 0.125em #282828;
     cursor:pointer;
-  }
+}
   
-  span.name, span.suit{
-    width:100%;
-    display:block;
-    text-align:center;
-    padding-top:8px;
-  }
-
 .card.red {
-    color: #f01411;
+    color: #da1711;
 }
 
 .card.black {
     color: #181815;
+}
+
+
+.reverse{
+    background-image: url("./cardBack.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.cardTopLeft {
+    position: absolute;
+    top: 0.4em;
+    left: 0.6em;
+}
+
+.cardBottomRight {
+    position: absolute;
+    bottom: 0.4em;
+    right: 0.6em;
+    transform: rotate(180deg);
+}
+
+.cardCornerName {
+    width: 1em;
+    font-size: 1.2em;
+    text-align: center;
+    transform: translate(-50%, -25%);
+}
+
+.cardCornerSuit {
+    width: 1em;
+    font-size: 1em;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+.cardFaceSuits {
+    position: absolute;
+    top: 52%;
+    left: 50.5%;
+    width: 20%;
+    height: 34%;
+    transform: translate(-50%, -50%);
+}
+
+.cardSuitSymbol {
+    font-size: 2.25em;
+    position: absolute;
+}
+
+.cardSuitSymbol.mirrored {
+    transform: rotate(180deg);
 }
