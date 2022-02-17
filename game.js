@@ -303,42 +303,6 @@ const playRound = (playerDeck, opponentDeck) => {
 
 
 
-
-
-
-
-
-// ********************* Working with DOM
-// const el = (tagName, attributes, children) => {
-    
-    
-//     const element = document.createElement('div');
-    
-//     if (attributes) {
-//       for (const attrName in attributes) {
-//         element.setAttribute(attrName, attributes[attrName]);
-//       }
-//     }
-    
-//     if (children) {
-//       for (let i = 0; i < children.length; i++) {
-//         const child = children[i];
-//         if (typeof child === 'string') {
-//           element.appendChild(document.createTextNode(child));
-//         }
-//         else {
-//           element.appendChild(child);
-//         }
-//       }
-//     }  return element;
-//   };
-//   const div = (a, c) => el('div', a, c);
-
-
-
-
-
-
 // STILL TO DO:
 //
 //DOM elements to create visuals and HTML interface
