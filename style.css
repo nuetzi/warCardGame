@@ -82,11 +82,11 @@ h1 {
 .card {
     display: inline-block;
     position: relative;
-    margin: 10px;
     width: 105px;
     height: 150px;
     font-family: 'Cardo', serif;
-    font-size: x-large;
+    font-size: xx-large;
+    line-height: 60px;
     border-radius: 7px;
 }
   
