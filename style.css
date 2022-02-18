@@ -14,19 +14,19 @@
     justify-items: center; 
 }
 
-
 .gameArea {
     grid-area: 2 / 2;
     width: 60%;
     min-width: 650px;
-    height: 60%;
-    min-height: 650px;
+    height: 50%;
+    min-height: 500px;
+    padding: 10px;
     border: 2px solid black;
     border-radius: 20px;
     background-color: green;
     display: grid;
     gap: 10px;
-    grid-template: 15% 25% 15% 25% 20% / repeat(6, 1fr);
+    grid-template: 20% 35% 10% 15% 20% / repeat(6, 1fr);
     justify-items: center;
     align-items: center;
 }
@@ -38,18 +38,71 @@
     min-height: 50px;
     grid-row: 1;
     grid-column: 1 / 7;
+    color: #eae9e5;
     border: 2px solid black;
+    border-radius: 30px;
+    background-image: linear-gradient(to bottom right, #ba1711, #da4741);
+    box-shadow: 0 3px 5px #282828;
+    font-size: larger;
+    text-align: center;
+    line-height: 50px;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.playButton:hover {
+    color: white;
+    border: 2px solid white;
+    -webkit-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+     transform: scale(1.02);
+}
+
+.playButton:active {
+    position: relative;
+    box-shadow: 0px 1px 3px black;
+    top: 1.5px;
 }
 
 .status {
+    color: #faf9f5;
     grid-row: 4;
     grid-column: 2 / 6;
+    padding-bottom: 50px;
 }
 
 .resetButton {
+    width: 20%;
+    min-width: 200px;
+    height: 15%;
+    min-height: 50px;
+    margin-bottom: 60px;;
     grid-row: 5;
     grid-column: 2 / 6;
+    color: #eae9e5;
+    border: 2px solid black;
+    border-radius: 30px;
+    background-image: linear-gradient(to bottom right, #181815, #383835);
+    box-shadow: 0 3px 5px #282828;
+    font-size: larger;
+    text-align: center;
+    line-height: 50px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.resetButton:hover {
+    color: white;
+    border: 2px solid white;
+    -webkit-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+     transform: scale(1.02);
+}
+
+.resetButton:active {
+    position: relative;
+    box-shadow: 0px 1px 3px black;
+    top: 1.5px;
 }
 
 .card {
@@ -60,11 +113,7 @@
     height: 150px;
     font-family: 'Cardo', serif;
     font-size: x-large;
-    border: 1px solid #151718;
-    background-color: #faf9f5;
-    border-radius: 0.25em;
-    box-shadow: 0 0.0625em 0.125em #282828;
-    cursor: pointer;
+    border-radius: 7px;
 }
   
 .red {
@@ -75,15 +124,26 @@
     color: #181815;
 }
 
+.empty {
+    background-color: green;
+}
+
 .obverse {
     text-align: center;
+    border: 1px solid #151718;
+    background-color: #faf9f5;
+    box-shadow: 0 3px 5px #282828;
+    cursor: pointer;
 }
 
 .reverse {
+    border: 1px solid #151718;
     background-image: url("./cardBack.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    box-shadow: 0 3px 5px #282828;
+    cursor: pointer;
 }
 
 .card.reverse.player {
@@ -109,56 +169,15 @@
 .playerCount {
     grid-row: 3;
     grid-column: 1;
-    width: 105px;
+    width: 120px;
+    font-size: medium;
+    text-align: center;
 }
 
 .opponentCount {
     grid-row: 3;
     grid-column: 6;
-    width: 105px;
-}
-
-.cardTopLeft {
-    position: absolute;
-    top: 0.4em;
-    left: 0.6em;
-}
-
-.cardBottomRight {
-    position: absolute;
-    bottom: 0.4em;
-    right: 0.6em;
-    transform: rotate(180deg);
-}
-
-.cardCornerName {
-    width: 1em;
-    font-size: 1.2em;
+    width: 120px;
+    font-size: medium;
     text-align: center;
-    transform: translate(-50%, -25%);
-}
-
-.cardCornerSuit {
-    width: 1em;
-    font-size: 1em;
-    text-align: center;
-    transform: translate(-50%, -50%);
-}
-
-.cardFaceSuits {
-    position: absolute;
-    top: 52%;
-    left: 50.5%;
-    width: 20%;
-    height: 34%;
-    transform: translate(-50%, -50%);
-}
-
-.cardSuitSymbol {
-    font-size: 2.25em;
-    position: absolute;
-}
-
-.cardSuitSymbol.mirrored {
-    transform: rotate(180deg);
 }

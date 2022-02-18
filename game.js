@@ -43,9 +43,6 @@ class fullDeck {
             if (card.value == 1) {
                 card.value += 13
             }
-            if (card.color == 'red') {
-                document.querySelector(".card").className += 'red';
-            }
         });
 
     }
@@ -70,7 +67,8 @@ class fullDeck {
         return this.deck.shift();
     }
 
-    // Evenly distributes the cards between 2 arrays, which we will need in this game
+    // Evenly distributes the cards between 2 arrays, which we will need to start this game
+    // Could be modified to deal any number of cards between 2 players
     dealHalf() {
         for (let i = 0; i < this.deck.length; i++) {
             if (i % 2 == 0) {
@@ -83,10 +81,8 @@ class fullDeck {
 }
 
 
-
-gameDeck = new fullDeck;
-console.log(gameDeck.deck[0]);
-gameDeck.dealHalf();
+gameDeck = new fullDeck;            // Creates a shuffled deck named gameDeck
+gameDeck.dealHalf();                // Creates 2 arrays, each containing half of the original gameDeck
 
 
 
@@ -99,15 +95,16 @@ gameDeck.dealHalf();
 
 const playRound = (playerDeck, opponentDeck) => {
     if (playerDeck.length && opponentDeck.length > 0) {
-        roundCards.unshift(playerDeck.pop());                    // NOTE: Player's card will always have an odd index# in roundCards array
+        roundCards.unshift(playerDeck.pop());                    // NOTE: In this setup, player's card will always have an odd index# in roundCards array
         roundCards.unshift(opponentDeck.pop());
-        document.querySelector(".card.player.obverse").innerHTML = ` ${roundCards[1].name} ${roundCards[1].suit} `;
-        document.querySelector(".card.opponent.obverse").innerHTML = ` ${roundCards[0].name} ${roundCards[0].suit} `;
+        document.querySelector(".card.player.obverse").innerHTML = `<br> ${roundCards[1].name} <br> ${roundCards[1].suit} `;
+        document.querySelector(".card.opponent.obverse").innerHTML = `<br> ${roundCards[0].name} <br> ${roundCards[0].suit} `;
 
         // Test for a draw in the cards played and if so, deal out cards in a "war" scenario
         // The do-while loop will repeat until there is not a draw between the last played card by each side
         do {
             if (roundCards[1].value === roundCards[0].value) {
+                document.querySelector(".status").innerHTML = "WAR!"
                 alert(`                                                     WAR! 
                                                 Click OK to continue`);
                 if (playerDeck.length && opponentDeck.length >= 4) {
@@ -115,12 +112,16 @@ const playRound = (playerDeck, opponentDeck) => {
                         roundCards.unshift(playerDeck.pop());
                         roundCards.unshift(opponentDeck.pop());
                     }
+                    document.querySelector(".card.player.obverse").innerHTML = `<br> ${roundCards[1].name} <br> ${roundCards[1].suit} `;
+                    document.querySelector(".card.opponent.obverse").innerHTML = `<br> ${roundCards[0].name} <br> ${roundCards[0].suit} `;
                 }
                 else {
                     for (let i = Math.min(playerDeck.length, opponentDeck.length); i > 0; i--) {
                         roundCards.unshift(playerDeck.pop());
                         roundCards.unshift(opponentDeck.pop());
                     }
+                    document.querySelector(".card.player.obverse").innerHTML = `<br> ${roundCards[1].name} <br> ${roundCards[1].suit} `;
+                    document.querySelector(".card.opponent.obverse").innerHTML = `<br> ${roundCards[0].name} <br> ${roundCards[0].suit} `;
                 }
             }
         }
@@ -128,6 +129,7 @@ const playRound = (playerDeck, opponentDeck) => {
 
         // If the player's last played card is greater, all cards in the round go to the bottom of the player's deck
         if (roundCards[1].value > roundCards[0].value) {
+            document.querySelector(".status").innerHTML = "Player 1 wins this round"
             for (let j = roundCards.length; j > 0; j--) {
                 playerDeck.unshift(roundCards.pop());
             }
@@ -136,6 +138,7 @@ const playRound = (playerDeck, opponentDeck) => {
         // If the opponent's last played card is greater, all cards in the round go to the bottom of the opponent's deck
         else {
             for (let j = roundCards.length; j > 0; j--) {
+                document.querySelector(".status").innerHTML = "Player 2 wins this round"
                 opponentDeck.unshift(roundCards.pop());
             }
         }
@@ -150,18 +153,36 @@ const playRound = (playerDeck, opponentDeck) => {
 }
 
 const PLAY = () => {
+    document.querySelector("#active1").classList.remove("empty");
+    document.querySelector("#active1").classList.add("obverse");
+    document.querySelector("#active2").classList.remove("empty");
+    document.querySelector("#active2").classList.add("obverse");
     playRound(playerDeck, opponentDeck);
     console.log(playerDeck.length);
     console.log(opponentDeck.length);
 };
 
+const RESET = () => {
+    document.querySelector(".status").innerHTML = "";
+    document.querySelector(".card.player.obverse").innerHTML = "";
+    document.querySelector(".card.opponent.obverse").innerHTML = "";
+    document.querySelector("#active1").classList.remove("obverse");
+    document.querySelector("#active1").classList.add("empty");
+    document.querySelector("#active2").classList.remove("obverse");
+    document.querySelector("#active2").classList.add("empty");
+    playerDeck = [];
+    opponentDeck = [];
+    roundCards = [];
+    gameDeck = new fullDeck;
+    gameDeck.dealHalf();
+}
+
 
 
 document.querySelector('.playButton').addEventListener('click', PLAY);
 document.addEventListener("keypress", PLAY);
+document.querySelector('.resetButton').addEventListener('click', RESET);
 
-console.log(playerDeck);
-console.log(opponentDeck);
 
 // STILL TO DO:
 //** Need to show red suits properly */
