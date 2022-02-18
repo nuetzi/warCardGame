@@ -41,7 +41,7 @@ class fullDeck {
         // This bit of code can be commented out if a game requires Aces to count as 1
         this.deck.forEach((card) => {
             if (card.value == 1) {
-                card.value += 13
+                card.value += 13;
             }
         });
 
@@ -125,7 +125,7 @@ const playRound = (playerDeck, opponentDeck) => {
             document.querySelector("#active2").classList.remove("black");
             document.querySelector("#active2").classList.remove("red");
             document.querySelector("#active2").classList.add("black");
-    }
+        }
 
         // Test for a draw in the cards played and if so, deal out 4 more cards in a "war" scenario
         // The do-while loop will repeat until there is not a draw between the last played card by each side
@@ -140,13 +140,33 @@ const playRound = (playerDeck, opponentDeck) => {
                         roundCards.unshift(opponentDeck.pop());
                     }
                     document.querySelector(".card.player.obverse").innerHTML = `<br> ${roundCards[1].name} <br> ${roundCards[1].suit} `;
+                    if (roundCards[1].color == 'red') {
+                        document.querySelector("#active1").classList.remove("black");
+                        document.querySelector("#active1").classList.remove("red");
+                        document.querySelector("#active1").classList.add("red");
+                    }
+                    else {
+                        document.querySelector("#active1").classList.remove("black");
+                        document.querySelector("#active1").classList.remove("red");
+                        document.querySelector("#active1").classList.add("black");
+                    }                    
                     document.querySelector(".card.opponent.obverse").innerHTML = `<br> ${roundCards[0].name} <br> ${roundCards[0].suit} `;
+                    if (roundCards[0].color == 'red') {
+                        document.querySelector("#active2").classList.remove("black");
+                        document.querySelector("#active2").classList.remove("red");
+                        document.querySelector("#active2").classList.add("red");
+                    }
+                    else {
+                        document.querySelector("#active2").classList.remove("black");
+                        document.querySelector("#active2").classList.remove("red");
+                        document.querySelector("#active2").classList.add("black");
+                    }
                 }
 
                 if (playerDeck.length < 4) {
                     document.querySelector("#deck1").classList.remove("reverse");
                     document.querySelector("#deck1").classList.add("empty");
-                    document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>"
+                    document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>";
                     alert("Player 2 wins the game!");
                     return false;
                     }
@@ -154,7 +174,7 @@ const playRound = (playerDeck, opponentDeck) => {
                 if (opponentDeck.length < 4) {
                     document.querySelector("#deck2").classList.remove("reverse");
                     document.querySelector("#deck2").classList.add("empty");
-                    document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>"
+                    document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>";
                     alert("Player 1 wins the game!");
                     return false;
                 }      
@@ -171,7 +191,7 @@ const playRound = (playerDeck, opponentDeck) => {
             if (opponentDeck.length == 0) {
                 document.querySelector("#deck2").classList.remove("reverse");
                 document.querySelector("#deck2").classList.add("empty");
-                document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>"
+                document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>";
                 alert("Player 1 wins the game!");
             }
         }
@@ -179,13 +199,13 @@ const playRound = (playerDeck, opponentDeck) => {
         // If the opponent's last played card is greater, all cards in the round go to the bottom of the opponent's deck
         else {
             for (let j = roundCards.length; j > 0; j--) {
-                document.querySelector(".status").innerHTML = "Player 2 wins this round"
+                document.querySelector(".status").innerHTML = "Player 2 wins this round";
                 opponentDeck.unshift(roundCards.pop());
             }
             if (playerDeck.length == 0) {
                 document.querySelector("#deck1").classList.remove("reverse");
                 document.querySelector("#deck1").classList.add("empty");
-                document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>"
+                document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>";
                 alert("Player 2 wins the game!");
             }
         }
@@ -198,13 +218,13 @@ const playRound = (playerDeck, opponentDeck) => {
         if (playerDeck.length == 0 && (roundCards[1] < roundCards[0])) {
             document.querySelector("#deck1").classList.remove("reverse");
             document.querySelector("#deck1").classList.add("empty");
-            document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>"
+            document.querySelector(".status").innerHTML = "<b> Player 1 is out of cards <br> Player 2 wins the game! </b>";
             alert("Player 2 wins the game!");
         }
         else if (opponentDeck.length == 0 && (roundCards[0] < roundCards[1])) {
             document.querySelector("#deck2").classList.remove("reverse");
             document.querySelector("#deck2").classList.add("empty");
-            document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>"
+            document.querySelector(".status").innerHTML = "<b> Player 2 is out of cards <br> Player 1 wins the game! </b>";
             alert("Player 1 wins the game!");
         }
     }
