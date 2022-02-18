@@ -43,23 +43,11 @@ class fullDeck {
             if (card.value == 1) {
                 card.value += 13
             }
+            if (card.color == 'red') {
+                document.querySelector(".card").className += 'red';
+            }
         });
 
-
-        const deck = this.deck;
-        for (let i = 0; i < deck.length; i++) {                                  // Create a div for each card
-            let suitSymbol;
-            div.className = 'card';
-    
-            if (this.deck[i].suit == 'Diamonds') {                               // Generates the viewable symbols for each suit
-                suitSymbol = '&diams;';
-            } else {
-                suitSymbol = '&' + deck[i].suit.toLowerCase() + ';';
-            }
-    
-        div.innerHTML = '' + deck[i].name + '' + suitSymbol + '';           // Displays card name and suit
-        document.body.appendChild(document.createElement('div'));           // Make the div a child element of the body
-        }
     }
     
 
@@ -110,48 +98,73 @@ gameDeck.dealHalf();
 //
 
 const playRound = (playerDeck, opponentDeck) => {
-    roundCards.push(playerDeck.shift());                    // NOTE: Player's card will always have an even index# in roundCards array
-    document.querySelector(".card.player.obverse").innerHTML = ` ${roundCards[0].name} ${roundCards[0].suit} `;
-    document.querySelector(".card.player.obverse").className += ` ${roundCards[0].color}`;
+    if (playerDeck.length && opponentDeck.length > 0) {
+        roundCards.unshift(playerDeck.pop());                    // NOTE: Player's card will always have an odd index# in roundCards array
+        roundCards.unshift(opponentDeck.pop());
+        document.querySelector(".card.player.obverse").innerHTML = ` ${roundCards[1].name} ${roundCards[1].suit} `;
+        document.querySelector(".card.opponent.obverse").innerHTML = ` ${roundCards[0].name} ${roundCards[0].suit} `;
 
-    roundCards.push(opponentDeck.shift());
-    document.querySelector(".card.opponent.obverse").innerHTML = ` ${roundCards[1].name} ${roundCards[1].suit} `;
-    document.querySelector(".card.opponent.obverse").className += ` ${roundCards[1].color}`;
+        // Test for a draw in the cards played and if so, deal out cards in a "war" scenario
+        // The do-while loop will repeat until there is not a draw between the last played card by each side
+        do {
+            if (roundCards[1].value === roundCards[0].value) {
+                alert(`                                                     WAR! 
+                                                Click OK to continue`);
+                if (playerDeck.length && opponentDeck.length >= 4) {
+                    for (let i = 0; i < 4; i++) {
+                        roundCards.unshift(playerDeck.pop());
+                        roundCards.unshift(opponentDeck.pop());
+                    }
+                }
+                else {
+                    for (let i = Math.min(playerDeck.length, opponentDeck.length); i > 0; i--) {
+                        roundCards.unshift(playerDeck.pop());
+                        roundCards.unshift(opponentDeck.pop());
+                    }
+                }
+            }
+        }
+        while (roundCards[1].value === roundCards[0].value && roundCards[1] !== undefined && roundCards[0] !== undefined);
 
-    // Test for a draw in the cards played and if so, deal out cards in a "war" scenario
-    // The do-while loop will repeat until there is not a draw between the last played card by each side
-    do {
-        if (roundCards[roundCards.length-2].value === roundCards[roundCards.length-1].value) {
-            for (let i = 0; i < 4; i++) {
-                roundCards.push(playerDeck.shift());
-                roundCards.push(opponentDeck.shift());
+        // If the player's last played card is greater, all cards in the round go to the bottom of the player's deck
+        if (roundCards[1].value > roundCards[0].value) {
+            for (let j = roundCards.length; j > 0; j--) {
+                playerDeck.unshift(roundCards.pop());
+            }
+        }
+
+        // If the opponent's last played card is greater, all cards in the round go to the bottom of the opponent's deck
+        else {
+            for (let j = roundCards.length; j > 0; j--) {
+                opponentDeck.unshift(roundCards.pop());
             }
         }
     }
-    while (roundCards[roundCards.length-2].value === roundCards[roundCards.length-1].value)
-
-    // If the player's last played card is greater, all cards in the round go to the bottom of the player's deck
-    if (roundCards[roundCards.length-2].value > roundCards[roundCards.length-1].value) {
-        for (let j = roundCards.length; j > 0; j--) {
-            playerDeck.push(roundCards.shift());
-        }
-    }
-
-    // If the opponent's last played card is greater, all cards in the round go to the bottom of the opponent's deck
     else {
-        for (let j = roundCards.length; j > 0; j--) {
-            opponentDeck.push(roundCards.shift());
+        if (playerDeck.length == 0) {
+            alert("Player 2 wins!");
         }
+        else alert("Player 1 wins!");
     }
 
 }
 
+const PLAY = () => {
+    playRound(playerDeck, opponentDeck);
+    console.log(playerDeck.length);
+    console.log(opponentDeck.length);
+};
 
-playRound(playerDeck, opponentDeck);
+
+
+document.querySelector('.playButton').addEventListener('click', PLAY);
+document.addEventListener("keypress", PLAY);
+
+console.log(playerDeck);
+console.log(opponentDeck);
 
 // STILL TO DO:
-//
+//** Need to show red suits properly */
 //DOM elements to create visuals and HTML interface
-//Need to code logic for "war" scenario when a deck has <4 cards
-//Need to code win/lose conditions
+//Need to code logic for "war" scenario when a deck has <4 cards **(Still needs testing)
 //Play-test for unexpected errors

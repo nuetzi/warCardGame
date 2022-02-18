@@ -5,40 +5,66 @@
 
 .mainBody {
     background-size: 100%;
-    background-color: #181815;
+    background-image: linear-gradient(to bottom right, #707070, #181818);
     width: 100vw;
     height: 100vh;
     display: grid;
     grid-template: 20% 60% 20% / 20% 60% 20%;
     align-items: center;
-    justify-items: center;
+    justify-items: center; 
 }
+
 
 .gameArea {
     grid-area: 2 / 2;
-    width: 650px;
-    height: 650px;
+    width: 60%;
+    min-width: 650px;
+    height: 60%;
+    min-height: 650px;
     border: 2px solid black;
     border-radius: 20px;
     background-color: green;
     display: grid;
-    grid-template: repeat(4, auto) / repeat(6, auto);
+    gap: 10px;
+    grid-template: 15% 25% 15% 25% 20% / repeat(6, 1fr);
     justify-items: center;
     align-items: center;
+}
+
+.playButton {
+    width: 20%;
+    min-width: 200px;
+    height: 15%;
+    min-height: 50px;
+    grid-row: 1;
+    grid-column: 1 / 7;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.status {
+    grid-row: 4;
+    grid-column: 2 / 6;
+}
+
+.resetButton {
+    grid-row: 5;
+    grid-column: 2 / 6;
 }
 
 .card {
     display: inline-block;
     position: relative;
-    margin:5px;
+    margin: 10px;
     width: 105px;
     height: 150px;
     font-family: 'Cardo', serif;
+    font-size: x-large;
     border: 1px solid #151718;
     background-color: #faf9f5;
     border-radius: 0.25em;
     box-shadow: 0 0.0625em 0.125em #282828;
-    cursor:pointer;
+    cursor: pointer;
 }
   
 .red {
@@ -49,23 +75,47 @@
     color: #181815;
 }
 
-.obverse{
-
+.obverse {
+    text-align: center;
 }
 
-.reverse{
+.reverse {
     background-image: url("./cardBack.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.player {
-    grid-column: 1 span 2;
+.card.reverse.player {
+    grid-row: 2;
+    grid-column: 1;
 }
 
-.opponent {
-    grid-column: 3 span 2;
+.card.obverse.player {
+    grid-row: 2;
+    grid-column: 3;
+}
+
+.card.obverse.opponent {
+    grid-row: 2;
+    grid-column: 4;
+}
+
+.card.reverse.opponent {
+    grid-row: 2;
+    grid-column: 6;
+}
+
+.playerCount {
+    grid-row: 3;
+    grid-column: 1;
+    width: 105px;
+}
+
+.opponentCount {
+    grid-row: 3;
+    grid-column: 6;
+    width: 105px;
 }
 
 .cardTopLeft {
