@@ -20,6 +20,8 @@ I included a shuffle option for each side, because scenarios can arise resulting
 trading cards back and forth. In real life, we sometimes resorted to this too.
 There is also a button to reset the whole game and start over, which resets the deck and player stacks.
 
+For quicker play and convenience, I also enabled the option to press any character button on the keyboard to progress play.
+
 --------------------------
 
 Everything was done using HTML, CSS, and JavaScript to th ebest of my abilities.
